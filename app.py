@@ -95,7 +95,7 @@ with st.sidebar:
             max_value=1.0,
             value=float(default_w),
             step=0.005,
-            format="%.1%%",
+            format="%.3f",
             key=f"w_{ticker}",
         )
 
