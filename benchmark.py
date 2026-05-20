@@ -113,7 +113,7 @@ def compute_metrics(returns: pd.Series, risk_free_annual: float = 0.035) -> dict
     rolling_max   = equity_curve.cummax()
     drawdowns     = (equity_curve - rolling_max) / rolling_max
     max_dd        = drawdowns.min()
-    max_dd_date   = drawdowns.idxmin()
+    max_dd_date   = drawdowns.idxmin() if drawdowns.min() < 0 else None
     annual_return = (1 + cumulative) ** (252 / max(len(returns), 1)) - 1
     calmar        = abs(annual_return / max_dd) if max_dd != 0 else np.nan
     return {
@@ -123,7 +123,7 @@ def compute_metrics(returns: pd.Series, risk_free_annual: float = 0.035) -> dict
         "Volatilità (ann.)":    vol_annual,
         "Sharpe Ratio":         sharpe,
         "Max Drawdown":         max_dd,
-        "Data Max DD":          max_dd_date.strftime("%Y-%m-%d") if pd.notna(max_dd_date) else "N/A",
+        "Data Max DD": max_dd_date.strftime("%Y-%m-%d") if max_dd_date is not None else "N/A",
         "Calmar Ratio":         calmar,
     }
 
