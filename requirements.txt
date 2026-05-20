@@ -1,0 +1,11 @@
+yfinance
+pandas
+numpy
+plotly
+seaborn
+matplotlib
+scipy
+pandas-datareader
+openpyxl
+python-dateutil
+streamlit
