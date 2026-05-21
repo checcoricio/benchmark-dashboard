@@ -92,7 +92,9 @@ def download_prices(tickers: list, start: date, end: date) -> pd.DataFrame:
 
 
 def compute_benchmark(prices: pd.DataFrame, weights: dict):
-    returns = prices.pct_change().dropna()
+    # Normalizza i prezzi alla data iniziale (base 100)
+    prices_norm = prices / prices.iloc[0]
+    returns = prices_norm.pct_change().dropna()
     w = pd.Series(weights)
     common = w.index.intersection(returns.columns)
     w_aligned = w[common] / w[common].sum()
