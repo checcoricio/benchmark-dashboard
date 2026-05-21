@@ -208,13 +208,15 @@ with tab1:
     fig = go.Figure()
     for ticker in asset_returns.columns:
         eq = (1 + asset_returns[ticker]).cumprod()
+        eq = eq / eq.iloc[0] 
         fig.add_trace(go.Scatter(
             x=eq.index, y=(eq - 1) * 100,
             name=LABELS.get(ticker, ticker),
             mode="lines", line=dict(width=1), opacity=0.4,
         ))
+    bm_equity_norm = bm_equity / bm_equity.iloc[0]    
     fig.add_trace(go.Scatter(
-        x=bm_equity.index, y=(bm_equity - 1) * 100,
+        x=bm_equity_norm.index, y=(bm_equity_norm - 1) * 100,
         name="BENCHMARK", mode="lines",
         line=dict(width=3, color=BM_COLOR),
     ))
