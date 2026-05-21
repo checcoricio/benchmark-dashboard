@@ -233,12 +233,13 @@ with tab1:
                         "Mixed Allocation": "#e3a008", "Cash": "#6b7280"}
         fig2 = go.Figure()
         for col in class_equity.columns:
+            eq_norm = class_equity[col] / class_equity[col].iloc[0]
             perf = (class_equity[col] - 1) * 100
             fig2.add_trace(go.Scatter(
                 x=perf.index, y=perf, name=col, mode="lines",
                 line=dict(width=2.5, color=CLASS_COLORS.get(col)),
             ))
-        bm_perf = (bm_equity - 1) * 100
+        bm_perf = (bm_equity / bm_equity.iloc[0] - 1) * 100
         fig2.add_trace(go.Scatter(
             x=bm_perf.index, y=bm_perf, name="BENCHMARK TOTALE",
             mode="lines", line=dict(width=3, color="#111827", dash="dot"),
