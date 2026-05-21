@@ -154,7 +154,6 @@ def compute_class_performance(asset_returns: pd.DataFrame, weights: dict) -> pd.
         eq = (1 + asset_returns[available].dot(w)).cumprod()
         eq = eq / eq.iloc[0]   # ← normalizza a base 1
         results[class_name] = eq
-        results[class_name] = (1 + asset_returns[available].dot(w)).cumprod()
     return pd.DataFrame(results)
 
 
