@@ -19,7 +19,7 @@ warnings.filterwarnings('ignore')
 DEFAULT_PORTFOLIO = {
     # EQUITY (40% AA target)
     "SWDA.MI":  0.375,   # MSCI World EUR
-    "VWCE.MI":  0.0      # MSCI All-World EUR
+    "VWCE.MI":  0.0,     # MSCI All-World EUR   ← virgola aggiunta
     "EIMI.MI":  0.04,    # MSCI EM
 
     # FIXED INCOME (50% AA target)
@@ -48,7 +48,7 @@ LABELS = {
 }
 
 ASSET_CLASSES = {
-    "Equity":           ["SWDA.MI", "VWCE.MI, "EIMI.MI"],
+    "Equity":           ["SWDA.MI", "VWCE.MI", "EIMI.MI"],   # ← stringa chiusa correttamente
     "Fixed Income":     ["IHYU.MI", "AGGH.MI", "IEAC.MI", "SEGA.MI"],
     "Mixed Allocation": ["CMOD.MI"],
     "Cash":             ["XEON.MI"],
@@ -94,7 +94,6 @@ def download_prices(tickers: list, start: date, end: date) -> pd.DataFrame:
 
 
 def compute_benchmark(prices: pd.DataFrame, weights: dict):
-    # Normalizza i prezzi alla data iniziale (base 100)
     prices_norm = prices / prices.iloc[0]
     returns = prices_norm.pct_change().dropna()
     w = pd.Series(weights)
@@ -154,7 +153,7 @@ def compute_class_performance(asset_returns: pd.DataFrame, weights: dict) -> pd.
         w = pd.Series({t: weights.get(t, 0) for t in available})
         w = w / w.sum()
         eq = (1 + asset_returns[available].dot(w)).cumprod()
-        eq = eq / eq.iloc[0]   # ← normalizza a base 1
+        eq = eq / eq.iloc[0]
         results[class_name] = eq
     return pd.DataFrame(results)
 
