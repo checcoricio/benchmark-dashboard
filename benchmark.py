@@ -19,6 +19,7 @@ warnings.filterwarnings('ignore')
 DEFAULT_PORTFOLIO = {
     # EQUITY (40% AA target)
     "SWDA.MI":  0.375,   # MSCI World EUR
+    "VWCE.MI":  0.0      # MSCI All-World EUR
     "EIMI.MI":  0.04,    # MSCI EM
 
     # FIXED INCOME (50% AA target)
@@ -36,6 +37,7 @@ DEFAULT_PORTFOLIO = {
 
 LABELS = {
     "SWDA.MI":  "MSCI World EUR",
+    "VWCE.MI":  "MSCI All-World EUR",
     "EIMI.MI":  "MSCI EM",
     "IHYU.MI":  "Global High Yield",
     "AGGH.MI":  "Global Agg Corp",
@@ -46,7 +48,7 @@ LABELS = {
 }
 
 ASSET_CLASSES = {
-    "Equity":           ["SWDA.MI", "EIMI.MI"],
+    "Equity":           ["SWDA.MI", "VWCE.MI, "EIMI.MI"],
     "Fixed Income":     ["IHYU.MI", "AGGH.MI", "IEAC.MI", "SEGA.MI"],
     "Mixed Allocation": ["CMOD.MI"],
     "Cash":             ["XEON.MI"],
