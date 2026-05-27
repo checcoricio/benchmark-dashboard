@@ -93,18 +93,20 @@ with st.sidebar:
             label,
             min_value=0,
             max_value=100,
-            value=int(default_w * 100),   # default convertito in %
+            value=int(default_w * 100),
             step=1,
             format="%d%%",
             key=f"w_{ticker}",
         )
 
     total_w = sum(weights_input.values())
-    if abs(total_w - 1.0) > 0.001:
-        st.error(f"⚠️ Somma pesi: {total_w:.2%} — deve essere 100%")
+
+    # FIX: confronto corretto con 100 (i valori slider sono interi 0-100)
+    if abs(total_w - 100) > 0.1:
+        st.error(f"⚠️ Somma pesi: {total_w}% — deve essere 100%")
         weights_ok = False
     else:
-        st.success(f"✅ Somma pesi: {total_w:.2%}")
+        st.success(f"✅ Somma pesi: {total_w}%")
         weights_ok = True
 
     st.divider()
@@ -143,13 +145,14 @@ with st.spinner("⬇️ Download prezzi in corso..."):
         st.stop()
 
 # Normalizza pesi sugli asset effettivamente scaricati
-w_available = {k: v for k, v in weights_input.items() if k in prices.columns}
+# FIX: dividi per 100 per convertire da interi (es. 37) a frazioni (es. 0.37)
+w_available = {k: v / 100 for k, v in weights_input.items() if k in prices.columns}
 w_total = sum(w_available.values())
 weights = {k: v / w_total for k, v in w_available.items()}
 
 # ── Calcoli ──
 bm_returns, bm_equity, asset_returns = compute_benchmark(prices, weights)
-metrics     = compute_metrics(bm_returns, rf_rate)
+metrics       = compute_metrics(bm_returns, rf_rate)
 asset_metrics = {t: compute_metrics(asset_returns[t], rf_rate) for t in asset_returns.columns}
 contributions = compute_asset_contribution(asset_returns, weights)
 class_equity  = compute_class_performance(asset_returns, weights)
@@ -208,13 +211,13 @@ with tab1:
     fig = go.Figure()
     for ticker in asset_returns.columns:
         eq = (1 + asset_returns[ticker]).cumprod()
-        eq = eq / eq.iloc[0] 
+        eq = eq / eq.iloc[0]
         fig.add_trace(go.Scatter(
             x=eq.index, y=(eq - 1) * 100,
             name=LABELS.get(ticker, ticker),
             mode="lines", line=dict(width=1), opacity=0.4,
         ))
-    bm_equity_norm = bm_equity / bm_equity.iloc[0]    
+    bm_equity_norm = bm_equity / bm_equity.iloc[0]
     fig.add_trace(go.Scatter(
         x=bm_equity_norm.index, y=(bm_equity_norm - 1) * 100,
         name="BENCHMARK", mode="lines",
@@ -235,7 +238,6 @@ with tab1:
                         "Mixed Allocation": "#e3a008", "Cash": "#6b7280"}
         fig2 = go.Figure()
         for col in class_equity.columns:
-            eq_norm = class_equity[col] / class_equity[col].iloc[0]
             perf = (class_equity[col] - 1) * 100
             fig2.add_trace(go.Scatter(
                 x=perf.index, y=perf, name=col, mode="lines",
@@ -336,13 +338,13 @@ with tab6:
     for ticker in asset_returns.columns:
         m = asset_metrics[ticker]
         rows.append({
-            "Asset":           LABELS.get(ticker, ticker),
-            "Peso %":          f"{weights.get(ticker, 0):.2%}",
-            "Rend. cum.":      f"{m['Rendimento cumulato']:.2%}",
-            "Vol. ann.":       f"{m['Volatilità (ann.)']:.2%}",
-            "Sharpe":          f"{m['Sharpe Ratio']:.2f}",
-            "Max DD":          f"{m['Max Drawdown']:.2%}",
-            "Calmar":          f"{m['Calmar Ratio']:.2f}",
+            "Asset":      LABELS.get(ticker, ticker),
+            "Peso %":     f"{weights.get(ticker, 0):.2%}",
+            "Rend. cum.": f"{m['Rendimento cumulato']:.2%}",
+            "Vol. ann.":  f"{m['Volatilità (ann.)']:.2%}",
+            "Sharpe":     f"{m['Sharpe Ratio']:.2f}",
+            "Max DD":     f"{m['Max Drawdown']:.2%}",
+            "Calmar":     f"{m['Calmar Ratio']:.2f}",
         })
     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
 
