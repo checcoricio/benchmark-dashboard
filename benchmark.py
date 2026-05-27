@@ -19,7 +19,7 @@ warnings.filterwarnings('ignore')
 DEFAULT_PORTFOLIO = {
     # EQUITY (40% AA target)
     "SWDA.MI":  0.375,   # MSCI World EUR
-    "VWCE.MI":  0.0,     # MSCI All-World EUR   ← virgola aggiunta
+    "VWCE.MI":  0.0,     # MSCI All-World EUR   
     "EIMI.MI":  0.04,    # MSCI EM
 
     # FIXED INCOME (50% AA target)
