@@ -35,7 +35,7 @@ st.set_page_config(
 st.markdown("""
 <style>
     .metric-card {
-        background: #f8fafc;
+        background: #0f172a;
         border: 1px solid #e2e8f0;
         border-radius: 10px;
         padding: 16px 20px;
@@ -45,7 +45,7 @@ st.markdown("""
     .metric-value { font-size: 24px; font-weight: 600; color: #0f172a; }
     .metric-pos   { color: #059669; }
     .metric-neg   { color: #dc2626; }
-    section[data-testid="stSidebar"] { background: #f1f5f9; }
+    section[data-testid="stSidebar"] { background: #14532d; }
 </style>
 """, unsafe_allow_html=True)
 
