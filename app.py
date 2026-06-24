@@ -89,25 +89,33 @@ with st.sidebar:
     weights_input = {}
     for ticker, default_w in DEFAULT_PORTFOLIO.items():
         label = LABELS.get(ticker, ticker)
+        
+        # Forza la conversione a float del valore di default
+        # E assicura che sia compreso tra 0.0 e 1.0 (es. se era 25 diventa 0.25)
+        valore_iniziale = float(default_w)
+        if valore_iniziale > 1.0:
+            valore_iniziale = valore_iniziale / 100.0
+
         weights_input[ticker] = st.slider(
             label,
-            min_value=0,
-            max_value=100,
-            value=int(default_w * 100),
-            step=1,
-            format="%d%%",
+            min_value=0.0,              # FLOAT esplicito
+            max_value=1.0,              # FLOAT esplicito
+            value=valore_iniziale,      # FLOAT garantito coerente
+            step=0.01,                  # FLOAT esplicito (scatti dell'1%)
+            format="%.0f%%",            # Formato di visualizzazione corretto per float
             key=f"w_{ticker}",
         )
 
     total_w = sum(weights_input.values())
 
-    # FIX: confronto corretto con 100 (i valori slider sono interi 0-100)
-    if abs(total_w - 100) > 0.1:
-        st.error(f"⚠️ Somma pesi: {total_w}% — deve essere 100%")
+    # Controllo corretto basato su float (somma ideale = 1.0)
+    if abs(total_w - 1.0) > 0.001:
+        st.error(f"⚠️ Somma pesi: {total_w * 100:.1f}% — deve essere 100%")
         weights_ok = False
     else:
-        st.success(f"✅ Somma pesi: {total_w}%")
+        st.success(f"✅ Somma pesi: {total_w * 100:.1f}%")
         weights_ok = True
+
 
     st.divider()
 
