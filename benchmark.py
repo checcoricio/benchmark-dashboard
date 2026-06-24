@@ -19,7 +19,6 @@ warnings.filterwarnings('ignore')
 DEFAULT_PORTFOLIO = {
     # EQUITY (40% AA target)
     "SWDA.MI":  0.375,   # MSCI World EUR
-    "VWCE.MI":  0.0,     # MSCI All-World EUR   ← virgola aggiunta
     "EIMI.MI":  0.04,    # MSCI EM
 
     # FIXED INCOME (50% AA target)
@@ -48,7 +47,7 @@ LABELS = {
 }
 
 ASSET_CLASSES = {
-    "Equity":           ["SWDA.MI", "VWCE.MI", "EIMI.MI"],   # ← stringa chiusa correttamente
+    "Equity":           ["SWDA.MI", "EIMI.MI"],   # ← stringa chiusa correttamente
     "Fixed Income":     ["IHYU.MI", "AGGH.MI", "IEAC.MI", "SEGA.MI"],
     "Mixed Allocation": ["CMOD.MI"],
     "Cash":             ["XEON.MI"],
