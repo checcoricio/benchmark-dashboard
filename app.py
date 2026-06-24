@@ -94,7 +94,7 @@ with st.sidebar:
             min_value=0.0,
             max_value=100.0,
             value=round(default_w * 100, 1),
-            step=0.1,
+            step=0.5,
             format="%.1f%%",
             key=f"w_{ticker}",
         )
