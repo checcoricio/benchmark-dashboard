@@ -69,7 +69,7 @@ with st.sidebar:
     if period_choice == "Custom":
         col1, col2 = st.columns(2)
         with col1:
-            start_date = st.date_input("Data inizio", value=date(2024, 1, 1),
+            start_date = st.date_input("Data inizio", value=date(2026, 1, 1),
                                        max_value=TODAY)
         with col2:
             end_date = st.date_input("Data fine", value=TODAY,
@@ -91,10 +91,10 @@ with st.sidebar:
         label = LABELS.get(ticker, ticker)
         weights_input[ticker] = st.slider(
             label,
-            min_value=0,
+            min_value=0,5,
             max_value=100,
             value=int(default_w * 100),
-            step=1,
+            step=0,5,
             format="%d%%",
             key=f"w_{ticker}",
         )
