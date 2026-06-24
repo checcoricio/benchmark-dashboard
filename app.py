@@ -91,18 +91,18 @@ with st.sidebar:
         label = LABELS.get(ticker, ticker)
         weights_input[ticker] = st.slider(
             label,
-            min_value=0,
-            max_value=100,
-            value=int(default_w * 100),
-            step=1,
-            format="%d%%",
+            min_value=0.0,
+            max_value=100.0,
+            value=round(default_w * 100, 1),
+            step=0.1,
+            format="%.1f%%",
             key=f"w_{ticker}",
         )
-
+ 
     total_w = sum(weights_input.values())
-
-    # FIX: confronto corretto con 100 (i valori slider sono interi 0-100)
-    if abs(total_w - 100) > 0.1:
+ 
+    # FIX: tolleranza adeguata allo step 0.1%
+    if abs(total_w - 100) > 0.05:
         st.error(f"⚠️ Somma pesi: {total_w}% — deve essere 100%")
         weights_ok = False
     else:
