@@ -91,11 +91,11 @@ with st.sidebar:
         label = LABELS.get(ticker, ticker)
         weights_input[ticker] = st.slider(
             label,
-            min_value=0.05,
+            min_value=0.00,
             max_value=100.0,
             value=int(default_w * 100.0),
             step=0.05,
-            format="%.1f%%",
+            format="%.2f%%",
             key=f"w_{ticker}",
         )
 
